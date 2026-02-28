@@ -2,7 +2,9 @@ from google import genai
 
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
 client = genai.Client()
-model = "gemini-3-flash-preview"
+# model = "gemini-3-flash-preview"
+# model = "gemini-2.5-flash"
+model = "gemma-3-27b-it"
 
 def count_tokens(contents: str) -> int:
   total_tokens = client.models.count_tokens(
@@ -29,6 +31,36 @@ def generate_text_with_streaming_response(contents: str) -> str:
   for chunk in response:
     print(chunk.text, end="", flush=True)
   print()
+
+def multi_turn_conversation(contents: str) -> str:
+  chat = client.chats.create(model=model)
+
+  response = chat.send_message("I have 2 dogs in my house")
+  print(response.text)
+
+  response = chat.send_message("How many paws are there in total?")
+  print(response.text)
+
+  for message in chat.get_history():
+    print(f"role - {message.role}", end=": ")
+    print(message.parts[0].text)
+
+def multi_trun_conversation_with_streaming_response(contents: str) -> str:
+  chat = client.chats.create(model=model)
+
+  response = chat.send_message_stream("I have 2 dogs in my house")
+  for chunk in response:
+    print(chunk.text, end="", flush=True)
+  print()
+
+  response = chat.send_message_stream("How many paws are there in total?")
+  for chunk in response:
+    print(chunk.text, end="", flush=True)
+  print()
+
+  for message in chat.get_history():
+    print(f"role - {message.role}", end=": ")
+    print(message.parts[0].text)
 
 def main():
   contents = input("Enter the query: ")
@@ -67,6 +99,18 @@ def main3():
     prompt = input("Prompt: ")
     contents = f"role: user, content: {prompt}"
 
+def main4():
+  multi_turn_conversation("")
+
+def main5():
+  multi_trun_conversation_with_streaming_response("")
+
+def main6():
+  while True:
+
+    prompt = input("Prompt: ")
+    generate_text_with_streaming_response(prompt)
+    
 
 if __name__ == "__main__":
-  main3()
+  main6()
