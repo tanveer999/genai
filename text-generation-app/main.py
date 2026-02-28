@@ -44,30 +44,28 @@ def main2():
   # prompt = f"Show me {total_recipes} recipe for a dish with the following ingredients: {ingredients}. Per recipe, list all the ingredients used. Do not include any recipes that use ingredients from this list: {filter}. Just return the recipes, do not include any other text."
 
   prompt = f"""
-    Generate {total_recipes} high-quality recipes for a dish using only these ingredients:
+    You are a recipe generator.
+
+    Task:
+    Generate exactly {total_recipes} recipe(s), no more, no less.
+
+    Allowed ingredients:
     {ingredients}
 
-    Exclude any recipes containing forbidden ingredients:
+    Forbidden ingredients (must never appear):
     {filter}
 
-    For each recipe, provide:
-    1. A clear title.
-    2. Exact ingredient list (with quantities).
-    3. Step-by-step instructions (no vague phrasing like "mix well").
-    4. Optional: Cook time/servings if relevant.
-
-    Format strictly as a numbered list—**only recipes**, no metadata or explanations.
-    Example output structure:
-    ---
-    1. **Pasta Carbonara**
-      Ingredients: 200g pasta, 50g pancetta (forbidden), 3 eggs
-      Instructions: [Step 1], [Step 2]...
-
-    2. **Chicken Stir-Fry**
-      Ingredients: 4 chicken thighs, 1 bell pepper, 2 tbsp soy sauce
-      Instructions: [Steps]
-    ...
-    ---
+    Output rules (strict):
+    - Return only a numbered list of recipes.
+    - Start each recipe with: "<number>. <title>"
+    - Include exactly these sections per recipe:
+      Ingredients:
+      - <quantity> <ingredient>
+      Instructions:
+      1) <specific action>
+      2) <specific action>
+    - No intro text, no summary, no notes, no markdown emphasis.
+    - Do not output recipe number or anything after recipe {total_recipes}.
   """
 
   recipies = get_completion(prompt)
