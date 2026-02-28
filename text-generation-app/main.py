@@ -77,30 +77,30 @@ def main2():
   # prompt = f"Produce shopping list for the above recipes. Group the ingredients by recipe. List only ingredients that are not already in my pantry. I have {existing_ingredients} in my pantry. Do not include any other text."
   
   prompt = f"""
-    Generate a **grouped shopping list** for the recipes above, excluding:
-    1. Ingredients already in your pantry: {existing_ingredients}
-    2. Any ingredients from the excluded list: {filter}
+    You are given generated recipes and must produce a shopping list.
 
-    **Format Requirements:**
-    - **Group by recipe title** (e.g., "Pasta Carbonara" → all its ingredients).
-    - List only **unique items per group** (no duplicates across recipes).
-    - Include **quantities/measurements** where needed (e.g., "2 cups flour").
-    - Measurements should be in units like grams, liters, etc, not vague terms like "a pinch".
-    - Sort alphabetically within each group for consistency.
+    Task:
+    Create a grouped shopping list from the recipes above.
 
-    **Example Output:**
-    ---
-    1. **Pasta Carbonara**
-    - 1 cup pasta
-    - 3 eggs
+    Exclusions (strict):
+    - Do NOT include ingredients already in pantry: {existing_ingredients}
+    - Do NOT include forbidden ingredients: {filter}
 
-    2. **Chicken Stir-Fry**
-    - 4 chicken thighs
-    - 1 bell pepper
-    - 2 tbsp soy sauce
-    ...
-    ---
-  """
+    Output format (strict):
+    - Return only a numbered list of recipe groups.
+    - Group heading format: "<number>. <recipe title>"
+    - Under each group, list ingredients as:
+      - <quantity> <ingredient>
+    - Sort ingredient lines alphabetically within each recipe group.
+    - Keep only one line per ingredient per group (no duplicates).
+    - Use concrete units (g, kg, ml, l, tsp, tbsp, cups, pieces). No vague terms.
+    - No markdown bold/italics, no intro text, no notes, no explanations.
+
+    Validation rules:
+    - If a recipe has no remaining ingredients after exclusions, write:
+      - None
+    - Never include any pantry or forbidden ingredient.
+"""
 
   new_prompt = f"{recipies} {prompt}"
 
