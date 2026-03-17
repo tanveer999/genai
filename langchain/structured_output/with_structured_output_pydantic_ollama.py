@@ -1,15 +1,11 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_ollama import ChatOllama
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from typing import TypedDict, Annotated, Optional, Literal
 
 load_dotenv()
 
-# GEMINI_MODEL = "gemini-3-flash-preview"
-# GEMINI_MODEL = "gemini-3-27b-it"
-GEMINI_MODEL = "gemini-2.5-flash"
-
-model = ChatGoogleGenerativeAI(model=GEMINI_MODEL)
+model = ChatOllama(model="qwen3.5:2b", base_url="http://localhost:11434")
 
 class Review(BaseModel):
 
