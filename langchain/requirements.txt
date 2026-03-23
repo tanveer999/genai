@@ -153,3 +153,6 @@ zstandard==0.25.0
 streamlit==1.55.0
 email-validator==2.3.0
 grandalf==0.8
+langchain-community==0.4.1
+pypdf==6.9.2
+beautifulsoup4==4.14.3
